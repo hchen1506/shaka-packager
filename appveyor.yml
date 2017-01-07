@@ -18,11 +18,15 @@ install:
 before_build:
   - cd ..
   - depot_tools\gclient config https://github.com/google/shaka-packager.git --name=src --unmanaged
-  - depot_tools\gclient sync
+  - GYP_DEFINES='target_arch="%PLATFORM%"' depot_tools\gclient sync
 
 build_script:
   - cd src
-  - ..\depot_tools\ninja -C "out\%CONFIGURATION%" -k 100
+  - if ($env:platform -eq 'x64') {
+      ..\depot_tools\ninja -C "out\%CONFIGURATION%_x64" -k 100
+    } else {
+      ..\depot_tools\ninja -C "out\%CONFIGURATION%" -k 100
+    }
   - copy "out\%CONFIGURATION%\packager.exe" packager-win.exe
 
 test_script:
