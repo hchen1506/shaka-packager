@@ -25,18 +25,24 @@ build_script:
   - cd src
   - if [%PLATFORM%] == [x64] (
       ..\depot_tools\ninja -C "out\%CONFIGURATION%_x64" -k 100
-      copy "out\%CONFIGURATION%_x64\packager.exe" packager-win.exe
     ) else (
       ..\depot_tools\ninja -C "out\%CONFIGURATION%" -k 100
+    )
+  - if [%PLATFORM%] == [x64] (
+      copy "out\%CONFIGURATION%_x64\packager.exe" packager-win.exe
+    ) else (
       copy "out\%CONFIGURATION%\packager.exe" packager-win.exe
     )
 
 test_script:
   - if [%PLATFORM%] == [x64] (
       for %%f in ("out\%CONFIGURATION%_x64\*_*test.exe") do (%%f || exit /b 666)
-      python "out\%CONFIGURATION%_x64\packager_test.py" -v
     ) else (
       for %%f in ("out\%CONFIGURATION%\*_*test.exe") do (%%f || exit /b 666)
+    )
+  - if [%PLATFORM%] == [x64] (
+      python "out\%CONFIGURATION%_x64\packager_test.py" -v
+    ) else (
       python "out\%CONFIGURATION%\packager_test.py" -v
     )
 
