@@ -9,8 +9,6 @@ configuration:
 environment:
   matrix:
     - language: cpp
-    - platform: x64
-      platform_ext: _x64
 
 clone_folder: c:\projects\shaka-packager\src
 
@@ -25,11 +23,22 @@ before_build:
 
 build_script:
   - cd src
-  - copy "out\%CONFIGURATION%%PLATFORM_EXT%\packager.exe" packager-win.exe
+  - if [%PLATFORM%] == [x64] (
+      ..\depot_tools\ninja -C "out\%CONFIGURATION%_x64" -k 100
+      copy "out\%CONFIGURATION%_x64\packager.exe" packager-win.exe
+    ) else (
+      ..\depot_tools\ninja -C "out\%CONFIGURATION%" -k 100
+      copy "out\%CONFIGURATION%\packager.exe" packager-win.exe
+    )
 
 test_script:
-  - for %%f in ("out\%CONFIGURATION%%PLATFORM_EXT%\*_*test.exe") do (%%f || exit /b 666)
-  - python "out\%CONFIGURATION%%PLATFORM_EXT%\packager_test.py" -v
+  - if [%PLATFORM%] == [x64] (
+      for %%f in ("out\%CONFIGURATION%_x64\*_*test.exe") do (%%f || exit /b 666)
+      python "out\%CONFIGURATION%_x64\packager_test.py" -v
+    ) else (
+      for %%f in ("out\%CONFIGURATION%\*_*test.exe") do (%%f || exit /b 666)
+      python "out\%CONFIGURATION%\packager_test.py" -v
+    )
 
 artifacts:
   - path: packager-win.exe
