@@ -28,11 +28,11 @@ build_script:
     ) else (
       set output_dir=%CONFIGURATION%
     )
-  - copy "out\%OUTPUT_DIR%\packager.exe" packager-win.exe
+  - copy "out\!OUTPUT_DIR!\packager.exe" packager-win.exe
 
 test_script:
-  - for %%f in ("out\%OUTPUT_DIR%\*_*test.exe") do (%%f || exit /b 666)
-  - python "out\%OUTPUT_DIR%\packager_test.py" -v
+  - for %%f in ("out\!OUTPUT_DIR!\*_*test.exe") do (%%f || exit /b 666)
+  - python "out\!OUTPUT_DIR!\packager_test.py" -v
 
 artifacts:
   - path: packager-win.exe
