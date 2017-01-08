@@ -23,11 +23,11 @@ before_build:
 
 build_script:
   - cd src
-  - if ($env:platform -eq 'x64') {
+  - if [%PLATFORM%] == ['x64'] (
       ..\depot_tools\ninja -C "out\%CONFIGURATION%_x64" -k 100
-    } else {
+    ) else (
       ..\depot_tools\ninja -C "out\%CONFIGURATION%" -k 100
-    }
+    )
   - copy "out\%CONFIGURATION%\packager.exe" packager-win.exe
 
 test_script:
