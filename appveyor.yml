@@ -1,3 +1,7 @@
+platform:
+  - x86
+  - x64
+
 configuration:
   - Debug
   - Release
@@ -5,10 +9,8 @@ configuration:
 environment:
   matrix:
     - language: cpp
-    - platform: x86
-      output_dir: %CONFIGURATION%
     - platform: x64
-      output_dir: %CONFIGURATION%_x64
+      platform_ext: _x64
 
 clone_folder: c:\projects\shaka-packager\src
 
@@ -23,11 +25,11 @@ before_build:
 
 build_script:
   - cd src
-  - copy "out\%OUTPUT_DIR%\packager.exe" packager-win.exe
+  - copy "out\%CONFIGURATION%%PLATFORM_EXT%\packager.exe" packager-win.exe
 
 test_script:
-  - for %%f in ("out\%OUTPUT_DIR%\*_*test.exe") do (%%f || exit /b 666)
-  - python "out\%OUTPUT_DIR%\packager_test.py" -v
+  - for %%f in ("out\%CONFIGURATION%%PLATFORM_EXT%\*_*test.exe") do (%%f || exit /b 666)
+  - python "out\%CONFIGURATION%%PLATFORM_EXT%\packager_test.py" -v
 
 artifacts:
   - path: packager-win.exe
