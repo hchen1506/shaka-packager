@@ -24,15 +24,15 @@ before_build:
 build_script:
   - cd src
   - if [%PLATFORM%] == [x64] (
-      ..\depot_tools\ninja -C "out\%CONFIGURATION%_x64" -k 100
+      set output_dir=%CONFIGURATION%_%PLATFORM%
     ) else (
-      ..\depot_tools\ninja -C "out\%CONFIGURATION%" -k 100
+      set output_dir=%CONFIGURATION%
     )
-  - copy "out\%CONFIGURATION%\packager.exe" packager-win.exe
+  - copy "out\%OUTPUT_DIR%\packager.exe" packager-win.exe
 
 test_script:
-  - for %%f in ("out\%CONFIGURATION%\*_*test.exe") do (%%f || exit /b 666)
-  - python "out\%CONFIGURATION%\packager_test.py" -v
+  - for %%f in ("out\%OUTPUT_DIR%\*_*test.exe") do (%%f || exit /b 666)
+  - python "out\%OUTPUT_DIR%\packager_test.py" -v
 
 artifacts:
   - path: packager-win.exe
