@@ -18,7 +18,7 @@ install:
 before_build:
   - cd ..
   - depot_tools\gclient config https://github.com/google/shaka-packager.git --name=src --unmanaged
-  - $env:GYP_DEFINES='target_arch="%PLATFORM%"'
+  - set GYP_DEFINES='target_arch="%PLATFORM%"'
   - depot_tools\gclient sync
 
 build_script:
