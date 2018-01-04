@@ -5,9 +5,9 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 {
-  'includes': [
-    '../../common.gypi',
-  ],
+  'variables': {
+    'shaka_code': 1,
+  },
   'targets': [
     {
       'target_name': 'media_base',
@@ -109,10 +109,7 @@
         'proto_in_dir': '.',
         'proto_out_dir': 'packager/media/base',
       },
-      'includes': ['../../build/protoc.gypi'],
-      'dependencies': [
-        '../../third_party/protobuf/protobuf.gyp:protobuf_lite',
-      ],
+      'includes': ['../../protoc.gypi'],
     },
     {
       'target_name': 'media_base_unittest',

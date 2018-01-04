@@ -7,9 +7,9 @@
 # GYP file for any MPD generation targets.
 
 {
-  'includes': [
-    '../common.gypi',
-  ],
+  'variables': {
+    'shaka_code': 1,
+  },
   'targets': [
     {
       'target_name': 'media_info_proto',
@@ -21,7 +21,7 @@
         'proto_in_dir': 'base',
         'proto_out_dir': 'packager/mpd/base',
       },
-      'includes': ['../build/protoc.gypi'],
+      'includes': ['../protoc.gypi'],
       'dependencies': [
         # This target needs to depend on 'protobuf_full_do_not_use' to generate
         # non-LITE (full) protobuf. We need full protobuf to serialize and
